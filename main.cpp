@@ -1,23 +1,40 @@
 #include <iostream>
-#include <fstream>
 using namespace std;
+// Załączenie nagłówków poszczególnych klas
+#include "DoubleList.h"
 
-int main(int argc, char** argv) {
+int main() {
+    cout << "Listy dwukierunkowa" << endl;
 
-    ofstream plik("strona.html");
-    if(!plik)
-        cout<<"blad zapisu pliku";
-    else
-    {
-        plik<<"<html>";
-        plik<<"<head><title>Moja pierwsza strona www</title></head>";
-        plik<<"<body>Strona WWW</body>";
-        plik<<"</html>";
+    // Utworzenie instancji listy dzialającej na stercie
+    DoubleList* list = new DoubleList();
 
-        cout<<"Wygenerowana strona";
-    }
-    plik.close();
+    cout << "\n1. Dodawania elementow:" << endl;
+    // Dodaj na początek listy
+    list->addFront(20);
+    list->addFront(10);
 
+    // Dodaj na koniec listy
+    list->addBack(40);
+    list->addBack(50);
+
+    // Wyświetl całą listę (oczekiwane: 10, 20, 30, 40, 50)
+    cout << "Wyswietlanie calej listy: ";
+    list->display();
+
+    cout << "Wyswietlanie calej listy po usuwaniu (oczekiwane: 20, 40): ";
+    list->display();
+
+    cout << "\n3. Czyszczenia listy:" << endl;
+    // Wyczyść całą listę
+    list->clear();
+    cout << "Wyswietlanie calej listy po wyczyszczeniu: ";
+    list->display();
+
+    // Zwalnianie pamięci
+    delete list;
+
+    cout << "\nZakonczenie testow" << endl;
 
     return 0;
 }
