@@ -11,8 +11,8 @@
  */
 class DoubleList {
 private:
-    Node* head; ///< Wskaźnik na pierwszy element
-    Node* tail; ///< Wskaźnik na ostatni element
+    Node* head; ///< Wskaźnik na pierwszy element.
+    Node* tail; ///< Wskaźnik na ostatni element.
 
 public:
     /**

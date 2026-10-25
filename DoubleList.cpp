@@ -1,6 +1,6 @@
 /**
 * @file DoubleList.cpp
- * @brief Implementacja metod klasy DoubleList dla listy dwukierunkowej.
+ * @brief Implementacja metod klasy DoubleList dla listy dwukierunkowej. 
  */
 #include "DoubleList.h"
 #include "Node.h"
