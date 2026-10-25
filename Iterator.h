@@ -20,17 +20,31 @@ public:
     Iterator(Node* startNode);
 
     /**
-     * @brief Przesuwa iterator na następny element.
+     * @brief Sprawdza, czy istnieje obecny/następny element do odczytu.
+     * @return True, jeśli element istnieje, w przeciwnym razie false.
      */
-    void next();
+    bool hasNext();
 
     /**
-     * @brief Przesuwa iterator na poprzedni element.
+     * @brief Sprawdza, czy istnieje obecny/poprzedni element do odczytu.
+     * @return True, jeśli element istnieje, w przeciwnym razie false.
      */
-    void prev();
+    bool hasPrevious();
 
     /**
-     * @brief Pobiera wartość z obecnego węzła.
+     * @brief Pobiera wartość obecnego elementu i przesuwa iterator na następny.
+     * @return Wartość całkowita węzła lub -1, jeśli element nie istnieje.
+     */
+    int next();
+
+    /**
+     * @brief Pobiera wartość obecnego elementu i przesuwa iterator na poprzedni.
+     * @return Wartość całkowita węzła lub -1, jeśli element nie istnieje.
+     */
+    int previous();
+
+    /**
+     * @brief Pobiera wartość z obecnego węzła bez przesuwania.
      * @return Wartość całkowita węzła lub -1, jeśli węzeł to nullptr.
      */
     int getValue();

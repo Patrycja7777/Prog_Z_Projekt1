@@ -1,36 +1,33 @@
 /**
-* @file DoubleList.cpp
- * @brief Implementacja metod klasy DoubleList dla listy dwukierunkowej. 
+ * @file DoubleList.cpp
+ * @brief Implementacja metod klasy DoubleList.
  */
 #include "DoubleList.h"
-#include "Node.h"
 #include <iostream>
+
 using namespace std;
 
 /**
- * @brief Konstruktor domyślny.
- * Inicjalizuje pustą listę, ustawiając wskaźniki head i tail na nullptr.
+ * @brief Konstruktor domyślny klasy DoubleList.
+ * Inicjalizuje pustą listę ze wskaźnikami head i tail ustawionymi na nullptr.
  */
-DoubleList::DoubleList() {
-    head = nullptr;
-    tail = nullptr;
-}
+DoubleList::DoubleList() : head(nullptr), tail(nullptr) {}
 
 /**
- * @brief Destruktor.
- * Zwalnia zaalokowaną pamięć poprzez wywołanie metody clear().
+ * @brief Destruktor klasy DoubleList.
+ * Czyści listę i zwalnia zaalokowaną pamięć.
  */
 DoubleList::~DoubleList() {
     clear();
 }
 
 /**
- * @brief Dodaje element na początek listy.
- * @param value Wartość całkowita, która zostanie dodana jako nowy węzeł na początku.
+ * @brief Dodaje nowy element na początek listy.
+ * @param value Wartość całkowita do dodania.
  */
 void DoubleList::addFront(int value) {
     Node* newNode = new Node(value);
-    if (head == nullptr) { // Dla pustej listy
+    if (!head) {
         head = tail = newNode;
     } else {
         newNode->next = head;
@@ -40,12 +37,12 @@ void DoubleList::addFront(int value) {
 }
 
 /**
- * @brief Dodaje element na koniec listy.
- * @param value Wartość całkowita, która zostanie dodana jako nowy węzeł na końcu.
+ * @brief Dodaje nowy element na koniec listy.
+ * @param value Wartość całkowita do dodania.
  */
 void DoubleList::addBack(int value) {
     Node* newNode = new Node(value);
-    if (tail == nullptr) {
+    if (!tail) {
         head = tail = newNode;
     } else {
         tail->next = newNode;
@@ -55,12 +52,86 @@ void DoubleList::addBack(int value) {
 }
 
 /**
- * @brief Wyświetla całą listę.
- * Przechodzi przez wszystkie elementy od początku do końca, wypisując ich wartości.
+ * @brief Dodaje element pod wskazany indeks.
+ * @param index Indeks, pod którym ma zostać dodany element.
+ * @param value Wartość całkowita do dodania.
+ */
+void DoubleList::insertAt(int index, int value) {
+    if (index == 0) {
+        addFront(value);
+        return;
+    }
+    Node* current = head;
+    for (int i = 0; current != nullptr && i < index - 1; i++) {
+        current = current->next;
+    }
+    if (!current || !current->next) {
+        addBack(value);
+        return;
+    }
+
+    Node* newNode = new Node(value);
+    newNode->next = current->next;
+    newNode->prev = current;
+    current->next->prev = newNode;
+    current->next = newNode;
+}
+
+/**
+ * @brief Usuwa element z początku listy.
+ */
+void DoubleList::removeFront() {
+    if (!head) return;
+    Node* temp = head;
+    head = head->next;
+    if (head) head->prev = nullptr;
+    else tail = nullptr;
+    delete temp;
+}
+
+/**
+ * @brief Usuwa element z końca listy.
+ */
+void DoubleList::removeBack() {
+    if (!tail) return;
+    Node* temp = tail;
+    tail = tail->prev;
+    if (tail) tail->next = nullptr;
+    else head = nullptr;
+    delete temp;
+}
+
+/**
+ * @brief Usuwa element z pod wskazanego indeksu.
+ * @param index Indeks elementu do usunięcia.
+ */
+void DoubleList::removeAt(int index) {
+    if (!head) return;
+    if (index == 0) {
+        removeFront();
+        return;
+    }
+    Node* current = head;
+    for (int i = 0; current != nullptr && i < index; i++) {
+        current = current->next;
+    }
+    if (!current) return;
+    if (current == tail) {
+        removeBack();
+        return;
+    }
+
+    current->prev->next = current->next;
+    current->next->prev = current->prev;
+    delete current;
+}
+
+/**
+ * @brief Wyświetla całą listę od początku do końca.
  */
 void DoubleList::display() {
     Node* current = head;
-    while (current != nullptr) {
+    while (current) {
         cout << current->data << " ";
         current = current->next;
     }
@@ -68,16 +139,30 @@ void DoubleList::display() {
 }
 
 /**
- * @brief Czyści całą listę.
- * Usuwa wszystkie węzły z pamięci sterty i przywraca stan początkowy (pusta lista).
+ * @brief Wyświetla listę w odwrotnej kolejności (od końca do początku).
+ */
+void DoubleList::displayReverse() {
+    Node* current = tail;
+    while (current) {
+        cout << current->data << " ";
+        current = current->prev;
+    }
+    cout << endl;
+}
+
+/**
+ * @brief Czyści całą listę, usuwając z pamięci wszystkie jej węzły.
  */
 void DoubleList::clear() {
-    Node* current = head;
-    while (current != nullptr) {
-        Node* nextNode = current->next;
-        delete current;
-        current = nextNode;
+    while (head) {
+        removeFront();
     }
-    head = nullptr;
-    tail = nullptr;
+}
+
+/**
+ * @brief Pobiera iterator do poruszania się po liście.
+ * @return Zwraca wskaźnik na instancję klasy Iterator ustawioną na pierwszy element listy.
+ */
+Iterator* DoubleList::getIterator() {
+    return new Iterator(head);
 }

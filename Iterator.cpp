@@ -8,16 +8,30 @@ Iterator::Iterator(Node* startNode) {
     current = startNode;
 }
 
-void Iterator::next() {
-    if (current != nullptr) {
-        current = current->next;
-    }
+bool Iterator::hasNext() {
+    return current != nullptr;
 }
 
-void Iterator::prev() {
+bool Iterator::hasPrevious() {
+    return current != nullptr;
+}
+
+int Iterator::next() {
     if (current != nullptr) {
-        current = current->prev;
+        int val = current->data;
+        current = current->next;
+        return val;
     }
+    return -1;
+}
+
+int Iterator::previous() {
+    if (current != nullptr) {
+        int val = current->data;
+        current = current->prev;
+        return val;
+    }
+    return -1;
 }
 
 int Iterator::getValue() {
